@@ -4,6 +4,21 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+    <!--  Adding filter to moskito ui which redirects requests to /mui/* to moskito user interface -->
+    <filter>
+        <filter-name>MoskitoUIFilter</filter-name>
+        <filter-class>net.anotheria.moskito.webui.MoskitoUIFilter</filter-class>
+        <init-param>
+            <param-name>path</param-name>
+            <param-value>/mui/</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>MoskitoUIFilter</filter-name>
+        <url-pattern>/mui/*</url-pattern>
+    </filter-mapping>
+
+
     <!-- Processes application requests -->
     <servlet>
         <servlet-name>appServlet</servlet-name>
@@ -19,5 +34,17 @@
         <servlet-name>appServlet</servlet-name>
         <url-pattern>*.html</url-pattern>
     </servlet-mapping>
+
+    <listener>
+        <listener-class>
+            net.anotheria.moskito.webui.util.StartStopListener
+        </listener-class>
+    </listener>
+    <listener>
+        <listener-class>
+            net.anotheria.moskito.webui.util.SetupPreconfiguredAccumulators
+        </listener-class>
+    </listener>
+
 
 </web-app>
