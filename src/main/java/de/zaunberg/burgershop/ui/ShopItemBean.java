@@ -8,6 +8,9 @@ package de.zaunberg.burgershop.ui;
  */
 public class ShopItemBean {
 	private int price;
+	private String item;
+	private String nicePrice;
+
 
 	public int getPrice() {
 		return price;
@@ -33,6 +36,4 @@ public class ShopItemBean {
 		this.nicePrice = nicePrice;
 	}
 
-	private String item;
-	private String nicePrice;
 }

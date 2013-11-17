@@ -3,10 +3,13 @@ package de.zaunberg.burgershop.ui;
 import de.zaunberg.burgershop.service.Category;
 import de.zaunberg.burgershop.service.ShopService;
 import de.zaunberg.burgershop.service.ShopableItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,14 +23,16 @@ import java.util.List;
 @Controller
 public class ShopController {
 
+	private static Logger log = LoggerFactory.getLogger(ShopController.class);
+
 	@Autowired
 	private ShopService service;
 
 	@RequestMapping(value = "/shop.html")
-	public String enterShop(){
+	public String enterShop(HttpServletRequest request){
 
 		List<ShopableItem> items = service.getShopableItems();
-		System.out.println("Items: "+items);
+		log.debug("Items: "+items);
 
 		HashMap<Category, List<ShopItemBean>> beans = new HashMap<Category, List<ShopItemBean>>();
 		for (ShopableItem item : items){
@@ -51,7 +56,10 @@ public class ShopController {
 			itemsForCategory.add(bean);
 		}
 
-		System.out.println("beans: "+beans);
+		for (Category c : Category.values()){
+			request.setAttribute(c.name(), beans.get(c));
+		}
+
 
 		return "shop";
 	}

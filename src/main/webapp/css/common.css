@@ -233,64 +233,64 @@ table tr td:hover, table tr td.active_item {
 
 }
 
-.item1 {
-    background: url("../img/line1/item1.gif") 0 0 no-repeat transparent;
+.wheat {
+    background: url("../img/line1/wheat.gif") 0 0 no-repeat transparent;
 }
 
-.item2 {
-    background: url("../img/line1/item2.gif") 0 0 no-repeat transparent;
+.wholemeal {
+    background: url("../img/line1/wholemeal.gif") 0 0 no-repeat transparent;
 }
 
-.item3 {
-    background: url("../img/line1/item3.gif") 0 0 no-repeat transparent;
+.burned {
+    background: url("../img/line1/burned.gif") 0 0 no-repeat transparent;
 }
 
-.item4 {
-    background: url("../img/line1/item4.gif") 0 0 no-repeat transparent;
+.leibniz {
+    background: url("../img/line1/leibniz.gif") 0 0 no-repeat transparent;
 }
 
-.item5 {
-    background: url("../img/line1/item5.gif") 0 0 no-repeat transparent;
+.brioche {
+    background: url("../img/line1/brioche.gif") 0 0 no-repeat transparent;
 }
 
-.twolineitem1 {
-    background: url("../img/line2/item1.gif") 0 0 no-repeat transparent;
+.cow {
+    background: url("../img/line2/cow.gif") 0 0 no-repeat transparent;
 }
 
-.twolineitem2 {
-    background: url("../img/line2/item2.gif") 0 0 no-repeat transparent;
+.pork {
+    background: url("../img/line2/pork.gif") 0 0 no-repeat transparent;
 }
 
-.twolineitem3 {
-    background: url("../img/line2/item3.gif") 0 0 no-repeat transparent;
+.dog {
+    background: url("../img/line2/dog.gif") 0 0 no-repeat transparent;
 }
 
-.twolineitem4 {
-    background: url("../img/line2/item4.gif") 0 0 no-repeat transparent;
+.lamb {
+    background: url("../img/line2/lamb.gif") 0 0 no-repeat transparent;
 }
 
-.twolineitem5 {
-    background: url("../img/line2/item5.gif") 0 0 no-repeat transparent;
+.rat {
+    background: url("../img/line2/rat.gif") 0 0 no-repeat transparent;
 }
 
-.threelineitem1 {
-    background: url("../img/line3/item1.gif") 0 0 no-repeat transparent;
+.cockroach {
+    background: url("../img/line3/cockroach.gif") 0 0 no-repeat transparent;
 }
 
-.threelineitem2 {
-    background: url("../img/line3/item2.gif") 0 0 no-repeat transparent;
+.mushrooms {
+    background: url("../img/line3/mushrooms.gif") 0 0 no-repeat transparent;
 }
 
-.threelineitem3 {
-    background: url("../img/line3/item3.gif") 0 0 no-repeat transparent;
+.brocolli {
+    background: url("../img/line3/brocolli.gif") 0 0 no-repeat transparent;
 }
 
-.threelineitem4 {
-    background: url("../img/line3/item4.gif") 0 0 no-repeat transparent;
+.cheese {
+    background: url("../img/line3/cheese.gif") 0 0 no-repeat transparent;
 }
 
-.threelineitem5 {
-    background: url("../img/line3/item5.gif") 0 0 no-repeat transparent;
+.sauce {
+    background: url("../img/line3/sauce.gif") 0 0 no-repeat transparent;
 }
 
 .item_name div {

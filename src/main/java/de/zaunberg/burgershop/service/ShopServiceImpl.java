@@ -1,5 +1,8 @@
 package de.zaunberg.burgershop.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,121 +16,55 @@ public class ShopServiceImpl implements ShopService {
 
 	private LinkedList<ShopableItem> items;
 
+	private static Logger log = LoggerFactory.getLogger(ShopServiceImpl.class);
+
 	public ShopServiceImpl(){
 		items = new LinkedList<ShopableItem>();
 		items.add(new ShopableItem("wheat", 585, Category.BREAD));
 		items.add(new ShopableItem("wholemeal", 285, Category.BREAD));
 		items.add(new ShopableItem("brioche", 585, Category.BREAD));
-		items.add(new ShopableItem("burned down", 585, Category.BREAD));
+		items.add(new ShopableItem("burned", 585, Category.BREAD));
 		items.add(new ShopableItem("leibniz", 1085, Category.BREAD));
 
-/*
-		</tr>
-		<tr>
-		<td class="twolineitem1">
-		<div class="price">
-		<span> 13.85 € </span>
-		</div>
+		items.add(new ShopableItem("cow", 1385, Category.MEAT));
+		items.add(new ShopableItem("pork", 1185, Category.MEAT));
+		items.add(new ShopableItem("lamb", 1584, Category.MEAT));
+		items.add(new ShopableItem("dog", 585, Category.MEAT));
+		items.add(new ShopableItem("rat", 10, Category.MEAT));
 
-		<div class="item_name">
-		<p class="">cow</p>
-		<div></div>
-		</div>
-
-		</td>
-
-		<td class="twolineitem2">
-		<div class="price">
-		<span> 11.85 € </span>
-		</div>
-		<div class="item_name">
-		<p class="">pork</p>
-		<div></div>
-		</div>
-		</td>
-		<td class="twolineitem3">
-		<div class="price">
-		<span> 18.85 € </span>
-		</div>
-		<div class="item_name">
-		<p class="">lamb</p>
-		<div></div>
-		</div>
-		</td>
-		<td class="twolineitem4">
-		<div class="price">
-		<span> 19.85 € </span>
-		</div>
-		<div class="item_name">
-		<p class="">dog</p>
-		<div></div>
-		</div>
-		</td>
-		<td class="twolineitem5">
-		<div class="price">
-		<span> 15.85 € </span>
-		</div>
-		<div class="item_name">
-		<p class="">rat</p>
-		<div></div>
-		</div>
-		</td>
-
-		</tr>
-		<tr>
-		<td class="threelineitem1">
-		<div class="price">
-		<span> 10.85 € </span>
-		</div>
-
-		<div class="item_name">
-		<p class="">mushrooms</p>
-		<div></div>
-		</div>
-
-		</td>
-
-		<td class="threelineitem2">
-		<div class="price">
-		<span> 8.55 € </span>
-		</div>
-		<div class="item_name">
-		<p class="">brocolli</p>
-		<div></div>
-		</div>
-		</td>
-		<td class="threelineitem3">
-		<div class="price">
-		<span> 10.15 € </span>
-		</div>
-		<div class="item_name">
-		<p class="">cheese</p>
-		<div></div>
-		</div>
-		</td>
-		<td class="threelineitem4">
-		<div class="price">
-		<span> 8.85 € </span>
-		</div>
-		<div class="item_name">
-		<p class="">sauce</p>
-		<div></div>
-		</div>
-		</td>
-		<td class="threelineitem5">
-		<div class="price">
-		<span> 10.85 € </span>
-		</div>
-		<div class="item_name">
-		<p class="">сockroach</p>
-		<div></div>
-		</div>
-		</td>
-*/
+		items.add(new ShopableItem("mushrooms", 285, Category.EXTRAS));
+		items.add(new ShopableItem("broccoli", 185, Category.EXTRAS));
+		items.add(new ShopableItem("cheese", 85, Category.EXTRAS));
+		items.add(new ShopableItem("sauce", 85, Category.EXTRAS));
+		items.add(new ShopableItem("cockroach", 2085, Category.EXTRAS));
 	}
 
 	@Override
 	public List<ShopableItem> getShopableItems() {
-		return items;  //To change body of implemented methods use File | Settings | File Templates.
+		return items;
+	}
+
+	@Override
+	public Order placeOrder(String... items) {
+		//first find the order
+
+		if (items==null)
+			throw new IllegalArgumentException("No items for order");
+
+		Order order = new Order();
+		for (String item : items){
+			order.addItem(findItemByName(item));
+		}
+
+		return order;
+
+	}
+
+	private ShopableItem findItemByName(String name){
+		for (ShopableItem item : items){
+			if (item.getName().equals(name))
+				return item;
+		}
+		throw new IllegalArgumentException("No such shopable item: "+name);
 	}
 }

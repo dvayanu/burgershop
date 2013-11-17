@@ -19,6 +19,9 @@
     <![endif]-->
 
     <script type="text/javascript">
+
+        var choices = [];
+
         $(document).ready(function(){
 
             $("tr:first").show();
@@ -30,13 +33,14 @@
             $('#step_name').text("Select your " + step_names[0]);
 
             $("table tr td").click(function(){
+                var selection_name = $(this).find('p').text();
                 $(this).siblings('.active_item').removeClass('active_item')
                 $(this).addClass("active_item");
                 $(this).siblings().find('.dark').remove();
                 $(this).siblings().append("<div class='dark'></div>");
 
                 var tr_index = $(this).closest('tr').index();
-
+                choices[tr_index] = selection_name;
 
 
 
@@ -45,7 +49,7 @@
                 $.each(prices, function(index, price){
                     total_price += price;
                 });
-                $(".total_cost p span").text(total_price.toFixed(2) + ' €');
+                $(".total_cost p span").text(total_price.toFixed(2) + ' EUR');
 
                 var $nextLine = $(this).closest('tr').next();
                 if($nextLine.length > 0){
@@ -58,7 +62,7 @@
                 }
                 else{
                     $(".lightbox").show();
-                    $(".oder_now p").text('Order now ' + total_price.toFixed(2) + ' €');
+                    $(".oder_now p").text('Order now ' + total_price.toFixed(2) + ' EUR');
                     $(this).closest('table').addClass('selection_complete');
 
                 }
@@ -71,6 +75,11 @@
                 return false;
             });
 
+            //close lightbox
+            $('.black_bg, .order_click').click(function() {
+                $('.lightbox').hide();
+                document.location.href = 'order.html?choice1='+choices[0]+'&choice2='+choices[1]+'&choice3='+choices[2];
+            });
 
 
         });
@@ -93,15 +102,15 @@
 <table cellpadding="0" cellspacing="0">
     <tbody>
     <tr>
-        <ano:iterate name="breads" id="bread" type="de.zaunberg.burgershop.ui.ShopItemBean">
-            <td class="item <ano:write name="bread" property="name"/>">
+        <ano:iterate name="BREAD" id="bread" type="de.zaunberg.burgershop.ui.ShopItemBean">
+            <td class="<ano:write name="bread" property="item"/>">
 
                 <div class="price">
-                    <span><ano:write name="bread" property="price"/></span>
+                    <span><ano:write name="bread" property="nicePrice"/></span>
                 </div>
 
                 <div class="item_name">
-                    <p class=""><ano:write name="bread" property="name"/></p>
+                    <p class=""><ano:write name="bread" property="item"/></p>
                     <div></div>
                 </div>
 
@@ -109,106 +118,36 @@
         </ano:iterate>
     </tr>
     <tr>
-        <td class="twolineitem1">
-            <div class="price">
-                <span> 13.85 € </span>
-            </div>
+        <ano:iterate name="MEAT" id="meat" type="de.zaunberg.burgershop.ui.ShopItemBean">
+            <td class="<ano:write name="meat" property="item"/>">
 
-            <div class="item_name">
-                <p class="">cow</p>
-                <div></div>
-            </div>
+                <div class="price">
+                    <span><ano:write name="meat" property="nicePrice"/></span>
+                </div>
 
-        </td>
+                <div class="item_name">
+                    <p class=""><ano:write name="meat" property="item"/></p>
+                    <div></div>
+                </div>
 
-        <td class="twolineitem2">
-            <div class="price">
-                <span> 11.85 € </span>
-            </div>
-            <div class="item_name">
-                <p class="">pork</p>
-                <div></div>
-            </div>
-        </td>
-        <td class="twolineitem3">
-            <div class="price">
-                <span> 18.85 € </span>
-            </div>
-            <div class="item_name">
-                <p class="">lamb</p>
-                <div></div>
-            </div>
-        </td>
-        <td class="twolineitem4">
-            <div class="price">
-                <span> 19.85 € </span>
-            </div>
-            <div class="item_name">
-                <p class="">dog</p>
-                <div></div>
-            </div>
-        </td>
-        <td class="twolineitem5">
-            <div class="price">
-                <span> 15.85 € </span>
-            </div>
-            <div class="item_name">
-                <p class="">rat</p>
-                <div></div>
-            </div>
-        </td>
-
+            </td>
+        </ano:iterate>
     </tr>
     <tr>
-        <td class="threelineitem1">
-            <div class="price">
-                <span> 10.85 € </span>
-            </div>
+        <ano:iterate name="EXTRAS" id="extra" type="de.zaunberg.burgershop.ui.ShopItemBean">
+            <td class="<ano:write name="extra" property="item"/>">
 
-            <div class="item_name">
-                <p class="">mushrooms</p>
-                <div></div>
-            </div>
+                <div class="price">
+                    <span><ano:write name="extra" property="nicePrice"/></span>
+                </div>
 
-        </td>
+                <div class="item_name">
+                    <p class=""><ano:write name="extra" property="item"/></p>
+                    <div></div>
+                </div>
 
-        <td class="threelineitem2">
-            <div class="price">
-                <span> 8.55 € </span>
-            </div>
-            <div class="item_name">
-                <p class="">brocolli</p>
-                <div></div>
-            </div>
-        </td>
-        <td class="threelineitem3">
-            <div class="price">
-                <span> 10.15 € </span>
-            </div>
-            <div class="item_name">
-                <p class="">cheese</p>
-                <div></div>
-            </div>
-        </td>
-        <td class="threelineitem4">
-            <div class="price">
-                <span> 8.85 € </span>
-            </div>
-            <div class="item_name">
-                <p class="">sauce</p>
-                <div></div>
-            </div>
-        </td>
-        <td class="threelineitem5">
-            <div class="price">
-                <span> 10.85 € </span>
-            </div>
-            <div class="item_name">
-                <p class="">сockroach</p>
-                <div></div>
-            </div>
-        </td>
-
+            </td>
+        </ano:iterate>
     </tr>
     </tbody>
 </table>
@@ -224,7 +163,7 @@
     <div class="box_l">
         <div class="oder_now">
             <a class="close_box">x</a>
-            <p></p>
+            <p class="order_click"></p>
         </div>
 
     </div>

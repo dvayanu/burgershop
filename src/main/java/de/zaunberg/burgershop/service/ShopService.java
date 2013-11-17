@@ -11,5 +11,7 @@ import java.util.List;
 public interface ShopService {
 	List<ShopableItem> getShopableItems();
 
+	Order placeOrder(String... items);
+
 
 }
