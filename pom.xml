@@ -7,7 +7,14 @@
   <version>1.0-SNAPSHOT</version>
   <name>Burgershop Maven Webapp</name>
   <url>http://maven.apache.org</url>
+
+    <properties>
+            <moskito.version>2.3.2</moskito.version>
+    </properties>
+
   <dependencies>
+
+
 
       <dependency>
           <groupId>org.springframework</groupId>
@@ -42,6 +49,27 @@
           <version>1.0.13</version>
       </dependency>
 
+          <dependency>
+              <groupId>net.anotheria</groupId>
+              <artifactId>moskito-core</artifactId>
+              <version>${moskito.version}</version>
+          </dependency>
+      <dependency>
+          <groupId>net.anotheria</groupId>
+          <artifactId>moskito-aop</artifactId>
+          <version>${moskito.version}</version>
+      </dependency>
+          <dependency>
+              <groupId>net.anotheria</groupId>
+              <artifactId>moskito-web</artifactId>
+              <version>${moskito.version}</version>
+          </dependency>
+          <dependency>
+              <groupId>net.anotheria</groupId>
+              <artifactId>moskito-webui</artifactId>
+              <version>${moskito.version}</version>
+          </dependency>
+
       <dependency>
           <groupId>junit</groupId>
           <artifactId>junit</artifactId>
@@ -51,5 +79,66 @@
   </dependencies>
   <build>
     <finalName>burgershop</finalName>
+      <plugins>
+
+          <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>aspectj-maven-plugin</artifactId>
+              <version>1.4</version>
+              <configuration>
+                  <aspectLibraries>
+                      <aspectLibrary>
+                          <groupId>net.anotheria</groupId>
+                          <artifactId>moskito-aop</artifactId>
+                      </aspectLibrary>
+                  </aspectLibraries>
+                  <source>1.6</source>
+                  <target>1.6</target>
+              </configuration>
+              <executions>
+                  <execution>
+                      <goals>
+                          <goal>compile</goal>
+                      </goals>
+                  </execution>
+              </executions>
+          </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-dependency-plugin</artifactId>
+              <configuration>
+                  <artifactItems><artifactItem>
+                      <groupId>net.anotheria</groupId>
+                      <artifactId>moskito-webui</artifactId>
+                      <version>${moskito.version}</version>
+                      <type>jar</type>
+                      <overWrite>true</overWrite>
+                      <outputDirectory>${project.build.directory}/tmp</outputDirectory>
+                      <includes>img/*,js/*.js,**/*.jsp,css/*.css</includes>
+                  </artifactItem></artifactItems>
+              </configuration>
+              <executions>
+                  <execution>
+                      <phase>compile</phase>
+                      <goals>
+                          <goal>unpack</goal>
+                      </goals>
+                  </execution>
+              </executions>
+          </plugin>
+
+          <plugin>
+              <artifactId>maven-war-plugin</artifactId>
+              <version>2.1</version>
+              <configuration>
+                  <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
+                  <webResources>
+                      <resource>
+                          <directory>${project.build.directory}/tmp</directory>
+                      </resource>
+                  </webResources>
+              </configuration>
+          </plugin>
+      </plugins>
   </build>
 </project>

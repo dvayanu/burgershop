@@ -1,5 +1,6 @@
 package de.zaunberg.burgershop.service;
 
+import net.anotheria.moskito.aop.annotation.Monitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +13,7 @@ import java.util.List;
  * @author lrosenberg
  * @since 16.11.13 22:47
  */
+@Monitor
 public class ShopServiceImpl implements ShopService {
 
 	private LinkedList<ShopableItem> items;
@@ -30,7 +32,7 @@ public class ShopServiceImpl implements ShopService {
 		items.add(new ShopableItem("pork", 1185, Category.MEAT));
 		items.add(new ShopableItem("lamb", 1584, Category.MEAT));
 		items.add(new ShopableItem("dog", 585, Category.MEAT));
-		items.add(new ShopableItem("rat", 10, Category.MEAT));
+		items.add(new ShopableItem("cat", 10, Category.MEAT));
 
 		items.add(new ShopableItem("mushrooms", 285, Category.EXTRAS));
 		items.add(new ShopableItem("broccoli", 185, Category.EXTRAS));
@@ -45,7 +47,7 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	@Override
-	public Order placeOrder(String... items) {
+	public Order placeOrder(List<String> items) {
 		//first find the order
 
 		if (items==null)
@@ -60,9 +62,20 @@ public class ShopServiceImpl implements ShopService {
 
 	}
 
+	private int counter = 0;
+
+
 	private ShopableItem findItemByName(String name){
+		if(counter % 4 == 0)  {
+			int dummy = 0;
+			for (int i = 0; i < 999999; i++){
+				   dummy++;
+			}
+		}
 		for (ShopableItem item : items){
 			if (item.getName().equals(name))
+				counter++;
+
 				return item;
 		}
 		throw new IllegalArgumentException("No such shopable item: "+name);
