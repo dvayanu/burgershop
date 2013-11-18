@@ -24,7 +24,11 @@ public class ShopableItem {
 	}
 
 	public int getPrice() {
-		return price;
+		try {
+			Thread.sleep(75);
+		} catch(InterruptedException e) {
+		}
+		return getPrice();
 	}
 
 	public void setPrice(int price) {

@@ -135,7 +135,30 @@
                     </webResources>
                 </configuration>
             </plugin>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.1.0.M0</version>
+							<configuration>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<webApp>
+						<contextPath>/test</contextPath>
+					</webApp>
+				</configuration>
+			</plugin>
         </plugins>
 
     </build>
+<repositories>
+	<repository>
+		<id>provided</id>
+		<url>http://nexus.anotheria.net/nexus/content/groups/public</url>
+		<releases>
+			<enabled>true</enabled>
+		</releases>
+		<snapshots>
+			<enabled>true</enabled>
+		</snapshots>
+	</repository>
+</repositories>
 </project>

@@ -18,6 +18,8 @@ public class ShopServiceImpl implements ShopService {
 
 	private LinkedList<ShopableItem> items;
 
+	private Order order = new Order();
+
 	private static Logger log = LoggerFactory.getLogger(ShopServiceImpl.class);
 
 	public ShopServiceImpl(){
@@ -35,6 +37,7 @@ public class ShopServiceImpl implements ShopService {
 		items.add(new ShopableItem("rat", 10, Category.MEAT));
 
 		items.add(new ShopableItem("mushrooms", 285, Category.EXTRAS));
+		items.add(new ShopableItem("mushrooms", 785, Category.EXTRAS));
 		items.add(new ShopableItem("broccoli", 185, Category.EXTRAS));
 		items.add(new ShopableItem("cheese", 85, Category.EXTRAS));
 		items.add(new ShopableItem("sauce", 85, Category.EXTRAS));
@@ -53,10 +56,9 @@ public class ShopServiceImpl implements ShopService {
 		if (items==null)
 			throw new IllegalArgumentException("No items for order");
 
-		Order order = new Order();
-		for (String item : items){
+		for (String item : items)
 			order.addItem(findItemByName(item));
-		}
+
 
 		return order;
 
@@ -64,7 +66,7 @@ public class ShopServiceImpl implements ShopService {
 
 	private ShopableItem findItemByName(String name){
 		for (ShopableItem item : items){
-			if (item.getName().equals(name))
+			if (item.getName() == name)
 				return item;
 		}
 		throw new IllegalArgumentException("No such shopable item: "+name);
