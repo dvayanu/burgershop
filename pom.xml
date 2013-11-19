@@ -51,5 +51,143 @@
   </dependencies>
   <build>
     <finalName>burgershop</finalName>
-  </build>
+    <plugins>
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+              <source>1.6</source>
+              <target>1.6</target>
+          </configuration>
+      </plugin>
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <configuration>
+              <!-- skip by default - prevent cobertura from double execute -->
+              <skip>true</skip><!-- back to true -->
+              <includes>
+                  <include>**/*Test.java</include>
+                  <include>**/*Suite.java</include>
+              </includes>
+
+          </configuration>
+          <executions>
+              <execution>
+                  <id>unit-tests</id>
+                  <phase>test</phase>
+                  <goals>
+                      <goal>test</goal>
+                  </goals>
+                  <configuration>
+                      <!-- Never skip running the tests when the test phase is invoked -->
+                      <skip>false</skip>
+                      <includes>
+                          <include>**/*Test.java</include>
+                          <include>**/*Suite.java</include>
+                      </includes>
+                  </configuration>
+              </execution>
+              <!-- not needed now <execution> <id>integration-tests</id> <phase>integration-test</phase>
+                  <goals> <goal>test</goal> </goals> <configuration> <! - - Never skip running
+                  the tests when the integration-test phase is invoked - - > <skip>false</skip>
+                  <includes> <! - - Include integration tests within integration-test phase.
+                  - - > <include>**/*IntegrationTest.java</include> </includes> </configuration>
+                  </execution> -->
+          </executions>
+      </plugin>
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <configuration>
+              <archive>
+                  <index>true</index>
+                  <manifest>
+                      <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                      <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                  </manifest>
+                  <manifestSections>
+                      <manifestSection>
+                          <name>Hudson</name>
+                          <manifestEntries>
+                              <SvnRevision>${env.SVN_REVISION}</SvnRevision>
+                              <BuildTag>${env.BUILD_TAG}</BuildTag>
+                              <BuildUrl>${env.BUILD_URL}</BuildUrl>
+                              <BuildId>${env.BUILD_ID}</BuildId>
+                              <BuildNumber>${env.BUILD_NUMBER}</BuildNumber>
+                              <SvnRevision>${env.SVN_REVISION}</SvnRevision>
+                              <JavaHome>${env.JAVA_HOME}</JavaHome>
+                          </manifestEntries>
+                      </manifestSection>
+                  </manifestSections>
+                  <!-- manifestEntries> </manifestEntries -->
+              </archive>
+          </configuration>
+      </plugin>
+
+      <!-- checkstyle -->
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>2.9.1</version>
+          <dependencies>
+              <dependency>
+                  <groupId>net.anotheria</groupId>
+                  <artifactId>ano-buildutils</artifactId>
+                  <version>1</version>
+              </dependency>
+          </dependencies>
+      </plugin>
+  </plugins>
+</build>
+<reporting>
+<plugins>
+    <!-- COBERTURA -->
+    <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>2.5.1</version>
+        <configuration>
+            <formats>
+                <format>html</format>
+                <format>xml</format>
+            </formats>
+        </configuration>
+    </plugin>
+
+    <!-- PMD -->
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>2.7.1</version>
+        <configuration>
+            <targetJdk>1.6</targetJdk>
+        </configuration>
+    </plugin>
+
+
+    <!-- checkstyle -->
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.9.1</version>
+        <configuration>
+            <enableRulesSummary>false</enableRulesSummary>
+            <configLocation>anotheria_checks.xml</configLocation>
+        </configuration>
+    </plugin>
+
+    <!-- findbugs -->
+    <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>2.5.2</version>
+        <configuration>
+            <findbugsXmlOutput>true</findbugsXmlOutput>
+            <findbugsXmlWithMessages>true</findbugsXmlWithMessages>
+            <xmlOutput>true</xmlOutput>
+        </configuration>
+    </plugin>
+    </plugins>
+    </reporting>
 </project>
