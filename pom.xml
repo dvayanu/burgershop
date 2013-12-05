@@ -65,7 +65,23 @@
             <artifactId>moskito-aop</artifactId>
             <version>${moskito.version}</version>
          </dependency>
-      </dependencies>
+
+        <dependency>
+            <groupId>net.anotheria</groupId>
+            <artifactId>moskito-web</artifactId>
+            <version>${moskito.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.anotheria</groupId>
+            <artifactId>moskito-webui</artifactId>
+            <version>${moskito.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.anotheria</groupId>
+            <artifactId>moskito-webui-jersey</artifactId>
+            <version>${moskito.version}</version>
+        </dependency>
+  </dependencies>
   <build>
     <finalName>burgershop</finalName>
       <plugins>
