@@ -3,6 +3,7 @@ package de.zaunberg.burgershop.ui;
 import de.zaunberg.burgershop.service.Order;
 import de.zaunberg.burgershop.service.ShopService;
 import de.zaunberg.burgershop.service.ShopableItem;
+import net.anotheria.moskito.aop.annotation.Monitor;
 import net.anotheria.util.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import java.util.LinkedList;
  * @since 17.11.13 15:16
  */
 @Controller
+@Monitor
 public class OrderController {
 	@Autowired
 	private ShopService service;
