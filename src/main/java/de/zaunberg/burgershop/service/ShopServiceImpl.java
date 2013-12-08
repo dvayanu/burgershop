@@ -20,6 +20,8 @@ public class ShopServiceImpl implements ShopService {
 
 	private static Logger log = LoggerFactory.getLogger(ShopServiceImpl.class);
 
+	private OrderCounter counter = new OrderCounter();
+
 	public ShopServiceImpl(){
 		items = new LinkedList<ShopableItem>();
 		items.add(new ShopableItem("wheat", 585, Category.BREAD));
@@ -57,6 +59,8 @@ public class ShopServiceImpl implements ShopService {
 		for (String item : items){
 			order.addItem(findItemByName(item));
 		}
+
+		counter.orderPlaced();
 
 		return order;
 
