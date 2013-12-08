@@ -8,7 +8,7 @@ import net.anotheria.moskito.aop.annotation.Count;
  * @author lrosenberg
  * @since 08.12.13 13:34
  */
-@Count
+@Count (category = "business", producerId = "orders")
 public class OrderCounter {
 	public void orderPlaced(){}
 
