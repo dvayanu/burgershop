@@ -5,6 +5,7 @@ import net.anotheria.moskito.core.producers.AbstractStats;
 import net.anotheria.moskito.core.stats.StatValue;
 import net.anotheria.moskito.core.stats.TimeUnit;
 import net.anotheria.moskito.core.stats.impl.StatValueFactory;
+import net.anotheria.moskito.webui.decorators.DecoratorRegistryFactory;
 
 /**
  * TODO comment this class
@@ -14,6 +15,9 @@ import net.anotheria.moskito.core.stats.impl.StatValueFactory;
  */
 public class SalesStats extends AbstractStats{
 
+	static{
+		DecoratorRegistryFactory.getDecoratorRegistry().addDecorator(SalesStats.class, new SalesStatsDecorator());
+	}
 
 	/**
 	 * The number of sales.
@@ -43,6 +47,10 @@ public class SalesStats extends AbstractStats{
 
 	public long getVolume(String intervalName){
 		return volume.getValueAsLong(intervalName);
+	}
+
+	public double getAverageVolume(String intervalName){
+		return (double)getVolume(intervalName) / getNumber(intervalName);
 	}
 
 
