@@ -9,7 +9,7 @@
   <url>http://maven.apache.org</url>
 
     <properties>
-        <moskito.version>2.4.0</moskito.version>
+        <moskito.version>2.4.1</moskito.version>
     </properties>
 
 
@@ -119,7 +119,8 @@
                       <type>jar</type>
                       <overWrite>true</overWrite>
                       <outputDirectory>${project.build.directory}/tmp</outputDirectory>
-                      <includes>img/*,js/*.js,**/*.jsp,css/*.css</includes>
+                      <includes>img/**,js/**,**/*.jsp,css/**</includes>
+
                   </artifactItem></artifactItems>
               </configuration>
               <executions>
