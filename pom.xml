@@ -10,6 +10,7 @@
 
     <properties>
         <moskito.version>2.4.1</moskito.version>
+        <moskito-central.version>1.1</moskito-central.version>
     </properties>
 
 
@@ -80,6 +81,17 @@
             <groupId>net.anotheria</groupId>
             <artifactId>moskito-webui-jersey</artifactId>
             <version>${moskito.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.moskito</groupId>
+            <artifactId>moskito-central-embedded-connector</artifactId>
+            <version>${moskito-central.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.moskito</groupId>
+            <artifactId>moskito-central-storages</artifactId>
+            <version>${moskito-central.version}</version>
         </dependency>
   </dependencies>
   <build>
