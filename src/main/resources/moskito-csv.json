@@ -12,9 +12,9 @@
             "includedIntervals": "5m,1h"
         },
         {
-            "includedProducers": "ThreadStates",
+            "includedProducers": "sales",
             "includedStats": "*",
-            "includedIntervals": "1m"
+            "includedIntervals": "1m,1h"
         }
     ]
 }
