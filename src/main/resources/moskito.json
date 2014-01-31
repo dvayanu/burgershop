@@ -1,0 +1,11 @@
+{
+    "@pluginsConfig": {
+        "@plugins": [
+            {
+                "name": "EmbeddedCentralConnector",
+                "configurationName": "none",
+                "className": "org.moskito.central.connectors.embedded.EmbeddedConnector"
+            }
+        ]
+    }
+},
