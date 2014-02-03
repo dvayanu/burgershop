@@ -85,12 +85,7 @@
 
         <dependency>
             <groupId>org.moskito</groupId>
-            <artifactId>moskito-central-embedded-connector</artifactId>
-            <version>${moskito-central.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.moskito</groupId>
-            <artifactId>moskito-central-storages</artifactId>
+            <artifactId>moskito-central-rest-connector</artifactId>
             <version>${moskito-central.version}</version>
         </dependency>
   </dependencies>
