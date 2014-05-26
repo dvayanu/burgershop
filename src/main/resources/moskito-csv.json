@@ -1,5 +1,5 @@
 {
-    "pattern": "/tmp/moskito-central/csv/{host}/{component}/{producer}/{interval}/{producer}_{stat}.csv",
+    "pattern": "/users/admin/tmp/moskito-central/csv/{host}/{component}/{producer}/{interval}/{producer}_{stat}.csv",
     "@entries": [
         {
             "includedProducers": "SessionCount",
