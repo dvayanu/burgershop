@@ -1,11 +1,10 @@
-apply plugin: 'java'
 apply plugin: 'war'
-apply plugin: 'maven'
+
 
 group = 'de.zaunberg'
 version = '1.0-SNAPSHOT'
 
-description = """Burgershop Maven Webapp"""
+description = "Burgershop Webapp"
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
