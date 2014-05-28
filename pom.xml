@@ -7,8 +7,12 @@
   <version>1.0-SNAPSHOT</version>
   <name>Burgershop Maven Webapp</name>
   <url>http://maven.apache.org</url>
-  <dependencies>
 
+    <properties>
+        <moskito.version>2.5.0</moskito.version>
+    </properties>
+
+  <dependencies>
       <dependency>
           <groupId>org.springframework</groupId>
           <artifactId>spring-web</artifactId>
@@ -48,8 +52,45 @@
           <version>4.5</version>
           <scope>test</scope>
     </dependency>
+
+      <!-- Dependency for MoSKito AOP -->
+      <dependency>
+          <groupId>net.anotheria</groupId>
+          <artifactId>moskito-core</artifactId>
+          <version>${moskito.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>net.anotheria</groupId>
+          <artifactId>moskito-aop</artifactId>
+          <version>${moskito.version}</version>
+      </dependency>
   </dependencies>
-  <build>
-    <finalName>burgershop</finalName>
-  </build>
+      <build>
+        <finalName>burgershop</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <version>1.4</version>
+                <configuration>
+                    <aspectLibraries>
+                        <aspectLibrary>
+                            <groupId>net.anotheria</groupId>
+                            <artifactId>moskito-aop</artifactId>
+                        </aspectLibrary>
+                    </aspectLibraries>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+      </build>
+
 </project>
