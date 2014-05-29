@@ -19,6 +19,9 @@ project.ext {
 
 configurations {
     moskitoWebUI
+    compile {
+        transitive = true
+    }
 }
 
 apply plugin: 'war'
@@ -45,10 +48,6 @@ dependencies {
     compile group: 'net.anotheria', name: 'moskito-aop', version: moskitoVersion
     compile group: 'net.anotheria', name: 'moskito-web', version: moskitoVersion
     compile group: 'net.anotheria', name: 'moskito-webui-jersey', version: moskitoVersion
-
-    // For some reason Gradle don't import jersey-core with moskito-webui-jersey,
-    //temporary added dependency on jersey-core
-    compile group: 'com.sun.jersey', name : 'jersey-core', version: '1.17.1'
 
     compile group: 'org.moskito', name: 'moskito-central-embedded-connector', version: moskitoCentralVersion
     compile group: 'org.moskito', name: 'moskito-central-storages', version: moskitoCentralVersion
