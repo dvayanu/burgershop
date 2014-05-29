@@ -10,7 +10,7 @@
 
     <properties>
         <moskito.version>2.4.1</moskito.version>
-        <moskito-central.version>1.1</moskito-central.version>
+        <moskito-central.version>1.1.0</moskito-central.version>
     </properties>
 
 
