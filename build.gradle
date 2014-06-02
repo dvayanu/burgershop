@@ -1,27 +1,70 @@
-apply plugin: 'war'
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "https://maven.eveoh.nl/content/repositories/releases" }
+    }
 
+    dependencies {
+        classpath "nl.eveoh:gradle-aspectj:1.4"
+    }
+}
+
+repositories {
+    maven { url "http://nexus.anotheria.net/nexus/content/groups/public" }
+}
+
+project.ext {
+    aspectjVersion = '1.7.4'
+}
+
+configurations {
+    moskitoWebUI
+    compile {
+        transitive = true
+    }
+}
+
+apply plugin: 'war'
+apply plugin: 'maven'
+apply plugin: 'aspectj'
 
 group = 'de.zaunberg'
 version = '1.0-SNAPSHOT'
+moskitoVersion = '2.4.0'
 
 description = "Burgershop Webapp"
 
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
-
-repositories {
-    mavenCentral()
-    maven { url "http://nexus.anotheria.net/nexus/content/groups/public" }
-
-}
 dependencies {
     compile group: 'org.springframework', name: 'spring-web', version: '3.2.4.RELEASE'
     compile group: 'org.springframework', name: 'spring-webmvc', version: '3.2.4.RELEASE'
     compile group: 'net.anotheria', name: 'ano-tags', version: '2.1.0'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.5'
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.0.13'
+
+    compile group: 'net.anotheria', name: 'moskito-core', version: moskitoVersion
+    compile group: 'net.anotheria', name: 'moskito-aop', version: moskitoVersion
+    compile group: 'net.anotheria', name: 'moskito-web', version: moskitoVersion
+    compile group: 'net.anotheria', name: 'moskito-webui-jersey', version: moskitoVersion
+
     testCompile group: 'junit', name: 'junit', version: '4.5'
     providedCompile group: 'javax.servlet', name: 'servlet-api', version: '2.5'
+    moskitoWebUI group: 'net.anotheria', name: 'moskito-webui', version: moskitoVersion
+    aspectpath group: 'net.anotheria', name: 'moskito-aop', version: moskitoVersion
+}
+
+task unpackWebUI(type: Copy) {
+    from {
+        configurations.moskitoWebUI.collect { zipTree(it) }
+    }
+    into "$buildDir/api/"
+
+    includeEmptyDirs = false
+    include('img/**', 'js/**', '**/*.jsp', 'css/**')
+}
+
+war.doFirst {
+    tasks.unpackWebUI.execute()
+    from "$buildDir/api"
 }
 
 war {
