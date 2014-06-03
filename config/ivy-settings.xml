@@ -1,0 +1,39 @@
+<ivysettings>
+	<settings defaultResolver="default"/>
+	
+  <property name="ivy.default.ivy.user.dir" value="${ivy.repos.home}"/>
+  
+  <!--  settings for local repository -->
+  <property name="ivy.local.default.root"             value="${ivy.default.ivy.user.dir}/ivy-local-repository" override="false"/>
+  <property name="ivy.local.default.ivy.pattern"      value="[organisation]/[module]/[revision]/[type]s/[artifact].[ext]" override="false"/>
+  <property name="ivy.local.default.artifact.pattern" value="[organisation]/[module]/[revision]/[type]s/[artifact].[ext]" override="false"/>
+  <resolvers>
+    <filesystem name="local">
+      <ivy pattern="${ivy.local.default.root}/${ivy.local.default.ivy.pattern}" />
+      <artifact pattern="${ivy.local.default.root}/${ivy.local.default.artifact.pattern}" />
+    </filesystem>
+  </resolvers>  	
+
+  <resolvers>
+    <ibiblio name="maven2" m2compatible="true" root="http://nexus.anotheria.net/nexus/content/groups/public"/>
+  </resolvers>  
+
+  <resolvers>
+    <ibiblio name="maven3" m2compatible="true" root="http://repository.anotheria.net/content/groups/public"/>
+  </resolvers> 
+	
+  <resolvers>
+    <chain name="main">
+      <resolver ref="maven2"/>
+      <resolver ref="maven3"/>
+    </chain>
+  </resolvers>
+ 
+  <resolvers>
+    <chain name="default" returnFirst="true">
+      <resolver ref="local"/>
+      <ibiblio name="ibiblio" m2compatible="true"/>
+      <resolver ref="main"/> 
+    </chain>
+  </resolvers>
+</ivysettings>
