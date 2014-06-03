@@ -17,10 +17,15 @@
   <resolvers>
     <ibiblio name="maven2" m2compatible="true" root="http://nexus.anotheria.net/nexus/content/groups/public"/>
   </resolvers>  
+
+  <resolvers>
+    <ibiblio name="maven3" m2compatible="true" root="http://repository.anotheria.net/content/groups/public"/>
+  </resolvers> 
 	
   <resolvers>
     <chain name="main">
       <resolver ref="maven2"/>
+      <resolver ref="maven3"/>
     </chain>
   </resolvers>
  

@@ -4,114 +4,190 @@
 <!-- Ant build file. For Ant 1.6.2 or above.                                -->
 <!-- ====================================================================== -->
 
-<project name="burgershop-from-maven" default="package" basedir="." xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
+<project name="burgershop-from-maven" default="war" basedir="." xmlns:ivy="antlib:fr.jayasoft.ivy.ant" xmlns:aspectj="antlib:org.aspectj">
 
   <!-- ====================================================================== -->
   <!-- Build environment properties                                           -->
   <!-- ====================================================================== -->
 
-  <property file="${user.home}/.m2/maven.properties"/>
-  <property file="ivy-build.properties"/>
+  <property name="config.dir" value="config" />
+  <property file="${config.dir}/versions.properties"/>
 
-  <property name="ivy.install.version" value="2.0.0-beta1" />
-  <property name="ivy.jar.dir" value="${basedir}/ivy" />
-  <property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar" />
-  <property name="ivy.lib.dir" value="${basedir}/libs" />
+  <property name="build.alltools.dir" value="${basedir}/tools" />
+  <property name="build.ivy.jar.file" value="${build.alltools.dir}/ivy.jar" />
+  <property name="build.aspectj.jar.file" value="${build.alltools.dir}/aspectjtools.jar" />
+  <property name="build.finalName" value="burgershop"/>
+  <property name="build.dir" value="target"/>
+  <property name="build.outputDir" value="${build.dir}/classes"/>
+  <property name="build.srcDir" value="src/main/java"/>
+  <property name="build.libDir" value="${build.dir}/${build.finalName}/WEB-INF/lib"/>
 
-  <property name="maven.build.finalName" value="burgershop"/>
-  <property name="maven.build.dir" value="target"/>
-  <property name="maven.build.outputDir" value="${maven.build.dir}/classes"/>
-  <property name="maven.build.srcDir.0" value="src/main/java"/>
-  <property name="maven.build.resourceDir.0" value="src/main/resources"/>
-  <property name="maven.build.testOutputDir" value="${maven.build.dir}/test-classes"/>
-  <property name="maven.build.testDir.0" value="src/test/java"/>
-  <property name="maven.build.testResourceDir.0" value="src/test/resources"/>
-  <property name="maven.test.reports" value="${maven.build.dir}/test-reports"/>
-  <property name="maven.reporting.outputDirectory" value="${maven.build.dir}/site"/>
+  <property name="reporting.outputDirectory" value="${build.dir}/site"/>
 
-  <property name="maven.repo.local" value="${user.home}/.m2/repository"/>
-  <property name="maven.settings.offline" value="false"/>
-  <property name="maven.settings.interactiveMode" value="true"/>
 
   <!-- ====================================================================== -->
-  <!-- Defining classpaths                                                    -->
+  <!-- Defining classpathes                                                   -->
   <!-- ====================================================================== -->
 
   <path id="build.classpath">
-    <fileset dir="${maven.build.dir}/${maven.build.finalName}/WEB-INF/lib/">
+    <fileset dir="${build.libDir}">
       <include name="*.jar"/>
     </fileset>
   </path>  
 
   <path id="antlib.classpath">
-      <fileset dir="${ivy.jar.dir}" includes="*.jar"/>
+      <fileset dir="${build.alltools.dir}" includes="*.jar"/>
   </path>
 
   <path id="ivy.lib.path">
-      <pathelement location="${ivy.jar.file}"/>
+      <pathelement location="${build.ivy.jar.file}"/>
   </path> 
 
   <!-- ====================================================================== -->
-  <!-- Init ivy target                                                        -->
+  <!-- War target. A dummy target for order defining                          -->
   <!-- ====================================================================== -->
 
-  <target name="init-ivy" unless="skip.download">
-      <mkdir dir="${ivy.jar.dir}"/>
+  <target name="war" 
+          depends="create-dirs, download-ivy, init-ivy, configure-ivy, resolve, get-dependencies, prepare-sourses, get-aspectjtools, init-aspectj, compile-aspectj, package" 
+          description="Builds the war for the application"
+  />
 
-      <taskdef uri="antlib:fr.jayasoft.ivy.ant"
-          resource="fr/jayasoft/ivy/ant/antlib.xml"
-          classpathref="antlib.classpath"
-          loaderref="antlib.classpath.loader"/>
+  <!-- ====================================================================== -->
+  <!-- Create directories target                                              -->
+  <!-- ====================================================================== -->
 
-      <taskdef resource="org/apache/ivy/ant/antlib.xml"
-                uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>  
+  <target name="create-dirs">
+      <echo message="create dirs..."/>
+      <mkdir dir="${build.alltools.dir}"/>
+      <mkdir dir="${build.libDir}"/>
+      <mkdir dir="${build.outputDir}"/>
   </target> 
 
   <!-- ====================================================================== -->
   <!-- Download ivy target                                                    -->
   <!-- ====================================================================== -->
 
-  <target name="download-ivy" depends="init-ivy" unless="skip.download">
+  <target name="download-ivy" unless="skip.download">
       <!-- download Ivy from web site so that it can be used even without any special installation -->
       <echo message="download ivy..."/>
-      <get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar"
-           dest="${ivy.jar.file}" usetimestamp="true"/>
+      <get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar"
+           dest="${build.ivy.jar.file}" usetimestamp="true"/>
   </target> 
+
+  <!-- ====================================================================== -->
+  <!-- Init ivy target                                                        -->
+  <!-- ====================================================================== -->
+
+  <target name="init-ivy">
+    <echo message="init ivy..."/>
+    <taskdef uri="antlib:fr.jayasoft.ivy.ant"
+        resource="fr/jayasoft/ivy/ant/antlib.xml"
+        classpathref="antlib.classpath"
+        loaderref="antlib.classpath.loader"/>
+
+    <taskdef resource="org/apache/ivy/ant/antlib.xml"
+            uri="antlib:org.apache.ivy.ant" 
+            classpathref="ivy.lib.path"/>  
+  </target>   
 
   <!-- ====================================================================== -->
   <!-- Configure ivy target                                                   -->
   <!-- ====================================================================== -->
-  <target name="ivy-configure">
+  <target name="configure-ivy">
     <echo message="configure ivy..."/>
-    <ivy:settings file="ivysettings.xml" id="upload.settingsId" />
+    <ivy:settings file="${config.dir}/ivy-settings.xml" id="upload.settingsId" />
   </target>
 
   <!-- ====================================================================== -->
   <!-- Download dependencies target                                           -->
   <!-- ====================================================================== -->
 
-  <target name="ivy-resolve" depends="ivy-configure">
-    <echo message="resolve ivy..."/>
-    <ivy:resolve file="ivy.xml" settingsRef="upload.settingsId"/>
+  <target name="resolve">
+    <echo message="resolve..."/>
+    <ivy:resolve file="${config.dir}/ivy-dependencies.xml" settingsRef="upload.settingsId" type="jar"/>
   </target>
 
   <!-- ====================================================================== -->
   <!-- Copy dependencies target                                               -->
   <!-- ====================================================================== -->
 
-  <target name="get-deps" depends="ivy-resolve" description="Download all dependencies with ivy" unless="maven.mode.offline">
-    <echo message="get dependencies ivy..."/>
-    <mkdir dir="${maven.build.dir}/${maven.build.finalName}/WEB-INF/lib"/>
-    <ivy:retrieve pattern="${maven.build.dir}/${maven.build.finalName}/WEB-INF/lib/[artifact]-[revision].[ext]" type="jar" settingsRef="upload.settingsId"/> 
+  <target name="get-dependencies" description="Download all dependencies with ivy" unless="maven.mode.offline">
+    <echo message="get dependencies..."/>
+    <ivy:retrieve pattern="${build.libDir}/[artifact]-[revision].[ext]" type="jar" 
+        settingsRef="upload.settingsId"/> 
+  </target>
+
+  <!-- ====================================================================== -->
+  <!-- Prepare sourses target                                                 -->
+  <!-- ====================================================================== -->
+
+  <target name="prepare-sourses" description="Unjar needed sourses">
+    <echo message="prepare sourses..."/>
+    <unzip src="${build.libDir}/moskito-webui-${moskito.version}.jar"
+        dest="${build.dir}/tmp" overwrite="true">
+      <patternset>
+          <include name="img/*"/>
+          <include name="js/*.js"/>
+          <include name="**/*.jsp"/>
+          <include name="css/*.css"/>
+      </patternset>        
+    </unzip> 
+  </target>
+
+
+  <!-- ====================================================================== -->
+  <!-- Get aspectjtools plugin target                                         -->
+  <!-- ====================================================================== -->
+
+  <target name="get-aspectjtools">
+    <echo message="get aspectjtools plugin..."/>
+    <move file="${build.libDir}/aspectjtools-${aspectjtools.version}.jar" 
+          tofile="${build.aspectj.jar.file}"
+    />
+  </target>
+
+  <!-- ====================================================================== -->
+  <!-- Init aspectjtools plugin target                                        -->
+  <!-- ====================================================================== -->
+
+  <target name="init-aspectj">
+    <echo message="init aspectj tools..."/>
+    <taskdef 
+        resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
+      <classpath>
+        <pathelement location="${build.aspectj.jar.file}"/>
+      </classpath>
+    </taskdef>
   </target>
 
   <!-- ====================================================================== -->
   <!-- Compilation target                                                     -->
   <!-- ====================================================================== -->
 
-  <target name="compile" depends="download-ivy, get-deps" description="Compile the code">
-    <mkdir dir="${maven.build.outputDir}"/>
-    <javac destdir="${maven.build.outputDir}" 
+  <target name="compile-aspectj">
+    <echo message="compile..."/>
+    <iajc source="1.7" target="1.7" destDir="${build.outputDir}">
+      <sourceroots>
+        <pathelement location="${build.srcDir}"/>
+      </sourceroots>
+      <aspectpath>
+        <pathelement location="${build.libDir}/moskito-aop-${moskito.version}.jar"/>
+      </aspectpath>  
+      <classpath>
+        <pathelement location="${build.alltools.dir}/aspectjrt.jar"/>
+        <fileset dir="${build.libDir}">
+          <include name="**/*.jar" />
+        </fileset>       
+      </classpath>      
+    </iajc>
+  </target>
+
+  <!-- ====================================================================== -->
+  <!-- Compilation target(old one. not used for now)                          -->
+  <!-- ====================================================================== -->
+
+  <target name="compile-javac" description="Compile the code">
+    <javac destdir="${build.outputDir}" 
            nowarn="false" 
            debug="true" 
            optimize="false" 
@@ -121,10 +197,26 @@
            source="1.6"
            target="1.6">
       <src>
-        <pathelement location="${maven.build.srcDir.0}"/>
+        <pathelement location="${build.srcDir}"/>
       </src>
       <classpath refid="build.classpath"/>
     </javac>
+  </target>
+
+  <!-- ====================================================================== -->
+  <!-- Package target                                                         -->
+  <!-- ====================================================================== -->
+
+  <target name="package" description="Package the application">
+    <war destfile="${build.dir}/${build.finalName}.war" 
+         compress="true" 
+         webxml="src/main/webapp/WEB-INF/web.xml">
+      <lib dir="${build.libDir}"/>
+      <classes dir="${build.outputDir}"/>
+      <fileset dir="src/main/webapp" 
+               excludes="WEB-INF/web.xml"/>
+      <fileset dir="${build.dir}/tmp"/>         
+    </war>
   </target>
 
   <!-- ====================================================================== -->
@@ -132,9 +224,9 @@
   <!-- ====================================================================== -->
 
   <target name="javadoc" description="Generates the Javadoc of the application">
-    <javadoc sourcepath="${maven.build.srcDir.0}" 
+    <javadoc sourcepath="${build.srcDir}" 
              packagenames="*" 
-             destdir="${maven.reporting.outputDirectory}/apidocs" 
+             destdir="${reporting.outputDirectory}/apidocs" 
              access="protected" 
              old="false" 
              verbose="false" 
@@ -155,39 +247,23 @@
   </target>
 
   <!-- ====================================================================== -->
-  <!-- Package target                                                         -->
-  <!-- ====================================================================== -->
-
-  <target name="package" depends="compile" description="Package the application">
-    <war destfile="${maven.build.dir}/${maven.build.finalName}.war" 
-         compress="true" 
-         webxml="src/main/webapp/WEB-INF/web.xml">
-      <lib dir="${maven.build.dir}/${maven.build.finalName}/WEB-INF/lib"/>
-      <classes dir="${maven.build.outputDir}"/>
-      <fileset dir="src/main/webapp" 
-               excludes="WEB-INF/web.xml"/>
-    </war>
-  </target>
-
-  <!-- ====================================================================== -->
-  <!-- A dummy target for the package named after the type it creates         -->
-  <!-- ====================================================================== -->
-
-  <target name="war" depends="package" description="Builds the war for the application"/>
-
-  <!-- ====================================================================== -->
   <!-- Cleaning up targets                                                    -->
   <!-- ====================================================================== -->
 
   <target name="clean" description="Clean the output directory">
-    <delete dir="${maven.build.dir}"/>
+    <delete dir="${build.dir}"/>
   </target>
 
-  <target name="clean-cache" depends="init-ivy" description="Clean the cache">
+  <target name="clean-cache" depends="download-ivy, init-ivy" description="Clean the cache">
     <ivy:cleancache />
   </target>
 
-  <target name="clean-all" depends="clean, clean-cache" description="Clean the output directory and the cache">
+  <target name="clean-tools" description="Clean the cache">
+    <delete dir="${build.alltools.dir}"/>
+  </target>
+  
+
+  <target name="clean-all" depends="clean, clean-cache, clean-tools" description="Clean the output directory and the cache">
   </target>
 
 </project>
