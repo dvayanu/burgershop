@@ -64,6 +64,14 @@
           <artifactId>moskito-aop</artifactId>
           <version>${moskito.version}</version>
       </dependency>
+
+      <!-- Enabling MoSKito Inspect connector for remote connection -->
+      <dependency>
+          <groupId>net.anotheria</groupId>
+          <artifactId>moskito-inspect-remote</artifactId>
+          <version>${moskito.version}</version>
+      </dependency>
+
   </dependencies>
       <build>
         <finalName>burgershop</finalName>
