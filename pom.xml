@@ -10,6 +10,7 @@
 
     <properties>
         <moskito.version>2.5.0</moskito.version>
+        <aspectj.version>1.7.4</aspectj.version>
     </properties>
 
   <dependencies>
@@ -80,6 +81,18 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>aspectj-maven-plugin</artifactId>
                 <version>1.4</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjrt</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjtools</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                </dependencies>
                 <configuration>
                     <aspectLibraries>
                         <aspectLibrary>
