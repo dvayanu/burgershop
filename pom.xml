@@ -9,7 +9,7 @@
   <url>http://maven.apache.org</url>
 
     <properties>
-        <moskito.version>2.5.0</moskito.version>
+        <moskito.version>2.5.2</moskito.version>
         <aspectj.version>1.7.4</aspectj.version>
     </properties>
 
@@ -66,10 +66,15 @@
           <version>${moskito.version}</version>
       </dependency>
 
-      <!-- Enabling MoSKito Inspect connector for remote connection -->
+      <!-- Enabling MoSKito Inspect Embedded -->
       <dependency>
           <groupId>net.anotheria</groupId>
-          <artifactId>moskito-inspect-remote</artifactId>
+          <artifactId>moskito-inspect-embedded</artifactId>
+          <version>${moskito.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>net.anotheria</groupId>
+          <artifactId>moskito-webui</artifactId>
           <version>${moskito.version}</version>
       </dependency>
 
@@ -111,6 +116,46 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>net.anotheria</groupId>
+                                    <artifactId>moskito-webui</artifactId>
+                                    <version>${moskito-version}</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${project.build.directory}/tmp/media</outputDirectory>
+                                    <includes>moskito/**,**/*.jsp</includes>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>${project.build.directory}/tmp/media</directory>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+
+
         </plugins>
       </build>
 
