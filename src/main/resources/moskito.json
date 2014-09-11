@@ -1,0 +1,78 @@
+{
+	"@thresholdsAlertsConfig": {
+		"@notificationProviders": [
+			{
+				"className": "net.anotheria.moskito.core.threshold.alerts.notificationprovider.LogFileNotificationProvider",
+				"appenderName": "MoskitoAlert",
+				"guardedStatus": "GREEN"
+			}
+/* Uncomment (and add a comma at the end of the previous block) if you want sms notifications. You'll need an account too.
+            {
+                "className": "net.anotheria.moskito.extensions.notificationproviders.BulkSMSNotificationProvider",
+                "user": "moskito",
+                "password": "qweqweqwe",
+                "recipients": "380973777273,4915122345102",
+                "templatePath": "thresholdAlertTemplate.txt",
+                "guardedStatus": "GREEN"
+            },
+*/
+/*Uncomment if you want mail notification.
+            {
+				"className": "net.anotheria.moskito.extensions.notificationproviders.MailgunNotificationProvider",
+				"recipients": "leon@leon-rosenberg.net",
+				"htmlTemplatePath":"thresholdAlertTemplate.htm",
+                "textTemplatePath":"thresholdAlertTemplate.txt",
+				"guardedStatus": "GREEN"
+			}
+*/
+		],
+
+		"@alertHistoryConfig": {
+			"maxNumberOfItems": 500,
+			"toleratedNumberOfItems": 550
+		}
+	},
+
+    "@thresholdsConfig": {
+        "@thresholds": [
+            {
+                "name": "OrderPerMinuteThreshold",
+                "producerName": "ShopService",
+                "statName": "placeOrder",
+                "valueName": "req",
+                "intervalName": "1m",
+                "@guards": [
+                    {"value": "3", "direction": "DOWN", "status": "GREEN"},
+                    {"value": "3", "direction": "UP", "status": "YELLOW"},
+                    {"value": "7", "direction": "UP", "status": "ORANGE"},
+                    {"value": "10", "direction": "UP", "status": "RED"},
+                    {"value": "50", "direction": "UP", "status": "PURPLE"}
+                ]
+            }
+        ]
+    },
+
+    "@accumulatorsConfig" : {
+        "accumulationAmount": 500,
+        "@accumulators": [
+            {
+                "name": "OrdersPerMinute",
+                "producerName": "ShopService",
+                "statName": "placeOrder",
+                "valueName": "req",
+                "intervalName": "1m"
+            }
+]
+    },
+
+	"@pluginsConfig": {
+		"@plugins": [
+			{
+				"name": "NoOpPlugin",
+				"configurationName": "none",
+				"className": "net.anotheria.moskito.core.plugins.NoOpPlugin"
+			}
+		]
+	}
+	
+}
