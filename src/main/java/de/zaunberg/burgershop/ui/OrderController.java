@@ -42,10 +42,16 @@ public class OrderController {
 			orderedItems.add(item.getName());
 		}
 		request.setAttribute("ordereditems", orderedItems);
-		request.setAttribute("totalPrice", NumberUtils.currencyFormat((double)order.getTotalPrice()/100, ','));
+		request.setAttribute("totalPrice", preparePrice(order));
 
 
 		return "confirmation";
+	}
+
+	private String preparePrice(Order order){
+		//return NumberUtils.currencyFormat((double)order.getTotalPrice()/100, ',');
+		//Optimization, don't need cast to double
+		return NumberUtils.currencyFormat(order.getTotalPrice()/100, ',');
 	}
 
 }

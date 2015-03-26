@@ -65,7 +65,192 @@
 ]
     },
 
-	"@pluginsConfig": {
+  "@gaugesConfig": {
+    "@gauges": [
+      {
+        "name": "Constant",
+        "@minValue": {
+          "constant": 0
+        },
+        "@currentValue": {
+          "constant": 70
+        },
+        "@maxValue": {
+          "constant":100
+        }
+      },
+      {
+        "name": "Orders",
+        "@minValue": {
+          "constant": 0
+        },
+        "@currentValue": {
+          "producerName": "ShopService",
+          "statName": "placeOrder",
+          "valueName": "req",
+          "intervalName": "1m"
+        },
+        "@maxValue": {
+          "constant":50
+        }
+      },
+      {
+        "name": "Sessions",
+        "@minValue": {
+          "constant": 0
+        },
+        "@currentValue": {
+          "producerName": "SessionCount",
+          "statName": "Sessions",
+          "valueName": "cur",
+          "intervalName": "default"
+        },
+        "@maxValue": {
+          "producerName": "SessionCount",
+          "statName": "Sessions",
+          "valueName": "max",
+          "intervalName": "default"
+        }
+      },
+      {
+        "name": "Memory",
+        "caption": "Used memory",
+        "@minValue": {
+          "constant": 0
+        },
+        "@currentValue": {
+          "producerName": "Heap memory",
+          "statName": "Heap memory",
+          "valueName": "Used Mb",
+          "intervalName": "default"
+        },
+        "@maxValue": {
+          "producerName": "JavaRuntimeMax",
+          "statName": "JavaRuntimeMax",
+          "valueName": "Current Mb",
+          "intervalName": "default"
+        }
+      },
+      {
+        "name": "Blocked",
+        "caption": "Blocked Threads",
+        "@minValue": {
+          "constant": 0
+        },
+        "@currentValue": {
+          "producerName": "ThreadStates",
+          "statName": "BLOCKED",
+          "valueName": "Current",
+          "intervalName": "1m"
+        },
+        "@maxValue": {
+          "producerName": "ThreadCount",
+          "statName": "ThreadCount",
+          "valueName": "current",
+          "intervalName": "default"
+        }
+      },
+      {
+        "name": "Running",
+        "caption": "Running Threads",
+        "@minValue": {
+          "constant": 0
+        },
+        "@currentValue": {
+          "producerName": "ThreadStates",
+          "statName": "RUNNABLE",
+          "valueName": "Current",
+          "intervalName": "1m"
+        },
+        "@maxValue": {
+          "producerName": "ThreadCount",
+          "statName": "ThreadCount",
+          "valueName": "current",
+          "intervalName": "default"
+        }
+      }
+    ]
+  },
+
+  "@dashboardsConfig": {
+    "@dashboards": [
+      {
+        "name": "Example Dashboard",
+        "@charts": [
+          {
+            "caption": "Memory",
+            "accumulators": ["OldGenFree MB 1m", "OldGenUsed MB 1m", "PermGenFree MB 1m"]
+          },
+          {
+            "caption": "Threads",
+            "accumulators": ["ThreadCount", "ThreadStateBlocked-1m", "ThreadStateRunnable-1m", "ThreadStateTimedWaiting-1m", "ThreadStateWaiting-1m"]
+          },
+          {
+            "accumulators": ["URL REQ 1m"]
+          },
+          {
+            "accumulators": ["URL Time 1m"]
+          },
+          {
+            "accumulators": ["URL AVG 1m"]
+          },
+          {
+            "accumulators": ["SessionCount Cur Absolute"]
+          },
+          {
+            "accumulators": ["CPU Time 1m"]
+          }
+
+        ],
+        "@thresholds": ["ThreadCount","OldGenFree", "PermGenFree"],
+        "@gauges": ["Blocked", "Memory", "Running", "Sessions"]
+
+      },
+      {
+        "name": "Burger board",
+        "@charts": [
+          {
+            "accumulators": ["OrdersPerMinute"]
+          },
+          {
+            "caption": "Memory",
+            "accumulators": ["OldGenFree MB 1m", "OldGenUsed MB 1m", "PermGenFree MB 1m"]
+          },
+          {
+            "caption": "Threads",
+            "accumulators": ["ThreadCount", "ThreadStateBlocked-1m", "ThreadStateRunnable-1m", "ThreadStateTimedWaiting-1m", "ThreadStateWaiting-1m"]
+          },
+          {
+            "accumulators": ["URL REQ 1m"]
+          },
+          {
+            "accumulators": ["URL Time 1m"]
+          },
+          {
+            "accumulators": ["URL AVG 1m"]
+          },
+          {
+            "accumulators": ["SessionCount Cur Absolute"]
+          },
+          {
+            "accumulators": ["CPU Time 1m"]
+          }
+
+        ],
+        "@thresholds": ["OrderPerMinuteThreshold", "ThreadCount","OldGenFree", "PermGenFree"],
+        "@gauges": ["Orders", "Memory", "Running", "Sessions"]
+
+      },
+      {
+        "name": "Empty Dashboard"
+      }
+    ]
+
+  },
+
+
+
+  "@pluginsConfig": {
 		"@plugins": [
 			{
 				"name": "NoOpPlugin",

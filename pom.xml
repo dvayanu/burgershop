@@ -9,7 +9,7 @@
   <url>http://maven.apache.org</url>
 
     <properties>
-        <moskito.version>2.5.2</moskito.version>
+        <moskito.version>2.5.7-SNAPSHOT</moskito.version>
         <aspectj.version>1.7.4</aspectj.version>
     </properties>
 
@@ -76,6 +76,11 @@
           <groupId>net.anotheria</groupId>
           <artifactId>moskito-webui</artifactId>
           <version>${moskito.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.moskito</groupId>
+          <artifactId>moskito-control-agent-http-endpoint</artifactId>
+          <version>1.1.0</version>
       </dependency>
 
   </dependencies>

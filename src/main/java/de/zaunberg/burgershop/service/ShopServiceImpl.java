@@ -1,6 +1,11 @@
 package de.zaunberg.burgershop.service;
 
+import de.zaunberg.burgershop.service.stats.SalesStats;
+import de.zaunberg.burgershop.service.stats.SalesStatsFactory;
 import net.anotheria.moskito.aop.annotation.Monitor;
+import net.anotheria.moskito.core.dynamic.OnDemandStatsProducer;
+import net.anotheria.moskito.core.dynamic.OnDemandStatsProducerException;
+import net.anotheria.moskito.core.registry.ProducerRegistryFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +24,13 @@ public class ShopServiceImpl implements ShopService {
 	private LinkedList<ShopableItem> items;
 
 	private static Logger log = LoggerFactory.getLogger(ShopServiceImpl.class);
+
+	//step 2 -> counters
+	private OrderCounter counter = new OrderCounter();
+	private IngredientCounter ingredientCounter = new IngredientCounter();
+
+	//step 3 - own producer
+	private OnDemandStatsProducer<SalesStats> salesProducer;
 
 	public ShopServiceImpl(){
 		items = new LinkedList<ShopableItem>();
@@ -39,6 +51,9 @@ public class ShopServiceImpl implements ShopService {
 		items.add(new ShopableItem("cheese", 85, Category.EXTRAS));
 		items.add(new ShopableItem("sauce", 85, Category.EXTRAS));
 		items.add(new ShopableItem("cockroach", 2085, Category.EXTRAS));
+
+		salesProducer = new OnDemandStatsProducer<SalesStats>("sales", "business", "sales", new SalesStatsFactory());
+		ProducerRegistryFactory.getProducerRegistryInstance().registerProducer(salesProducer);
 	}
 
 	@Override
@@ -56,7 +71,23 @@ public class ShopServiceImpl implements ShopService {
 		Order order = new Order();
 		for (String item : items){
 			order.addItem(findItemByName(item));
+			ingredientCounter.ingredientUsed(item);
 		}
+
+
+		counter.orderPlaced();
+
+		//now add sales counters...
+		int priceInCents = order.getTotalPrice();
+		salesProducer.getDefaultStats().addSale(priceInCents);
+		for (String item : items){
+			try{
+				salesProducer.getStats(item).addSale(priceInCents);
+			}catch(OnDemandStatsProducerException e){
+				log.warn("Couldn't mark items as sold because we obviously sell more items than producer limit" , e);
+			}
+		}
+
 
 		return order;
 
