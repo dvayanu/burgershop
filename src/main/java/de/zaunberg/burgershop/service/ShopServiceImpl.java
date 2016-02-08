@@ -2,6 +2,7 @@ package de.zaunberg.burgershop.service;
 
 import de.zaunberg.burgershop.service.stats.SalesStats;
 import de.zaunberg.burgershop.service.stats.SalesStatsFactory;
+import de.zaunberg.burgershop.service.stats.ThresholdProducer;
 import net.anotheria.moskito.aop.annotation.Monitor;
 import net.anotheria.moskito.core.dynamic.OnDemandStatsProducer;
 import net.anotheria.moskito.core.dynamic.OnDemandStatsProducerException;
@@ -54,6 +55,8 @@ public class ShopServiceImpl implements ShopService {
 
 		salesProducer = new OnDemandStatsProducer<SalesStats>("sales", "business", "sales", new SalesStatsFactory());
 		ProducerRegistryFactory.getProducerRegistryInstance().registerProducer(salesProducer);
+
+		new ThresholdProducer();
 	}
 
 	@Override

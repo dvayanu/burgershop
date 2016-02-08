@@ -9,7 +9,7 @@
   <url>http://maven.apache.org</url>
 
     <properties>
-        <moskito.version>2.5.7-SNAPSHOT</moskito.version>
+        <moskito.version>2.7.1-SNAPSHOT</moskito.version>
         <aspectj.version>1.7.4</aspectj.version>
     </properties>
 
@@ -69,9 +69,15 @@
       <!-- Enabling MoSKito Inspect Embedded -->
       <dependency>
           <groupId>net.anotheria</groupId>
-          <artifactId>moskito-inspect-embedded</artifactId>
+          <artifactId>moskito-inspect-remote</artifactId>
           <version>${moskito.version}</version>
       </dependency>
+<!--- -->
+      <dependency>
+          <groupId>net.anotheria</groupId>
+          <artifactId>moskito-inspect-embedded</artifactId>
+          <version>${moskito.version}</version>
+      </dependency> <!-- -->
       <dependency>
           <groupId>net.anotheria</groupId>
           <artifactId>moskito-webui</artifactId>
@@ -136,7 +142,7 @@
                                 <artifactItem>
                                     <groupId>net.anotheria</groupId>
                                     <artifactId>moskito-webui</artifactId>
-                                    <version>${moskito-version}</version>
+                                    <version>${moskito.version}</version>
                                     <type>jar</type>
                                     <overWrite>true</overWrite>
                                     <outputDirectory>${project.build.directory}/tmp/media</outputDirectory>
@@ -159,7 +165,7 @@
                     </webResources>
                 </configuration>
             </plugin>
-
+<!-- -->
 
         </plugins>
       </build>

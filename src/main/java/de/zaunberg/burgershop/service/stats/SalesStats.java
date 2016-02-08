@@ -1,11 +1,11 @@
 package de.zaunberg.burgershop.service.stats;
 
+import net.anotheria.moskito.core.decorators.DecoratorRegistryFactory;
 import net.anotheria.moskito.core.predefined.Constants;
 import net.anotheria.moskito.core.producers.AbstractStats;
 import net.anotheria.moskito.core.stats.StatValue;
 import net.anotheria.moskito.core.stats.TimeUnit;
 import net.anotheria.moskito.core.stats.impl.StatValueFactory;
-import net.anotheria.moskito.webui.decorators.DecoratorRegistryFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,5 +110,9 @@ public class SalesStats extends AbstractStats{
 	@Override
 	public List<String> getAvailableValueNames() {
 		return StatDef.getStatNames();
+	}
+
+	public void setNumber(int aNumber){
+		number.setValueAsInt(aNumber);
 	}
 }

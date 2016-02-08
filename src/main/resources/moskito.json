@@ -42,18 +42,34 @@
                 "valueName": "req",
                 "intervalName": "1m",
                 "@guards": [
-                    {"value": "3", "direction": "DOWN", "status": "GREEN"},
-                    {"value": "3", "direction": "UP", "status": "YELLOW"},
-                    {"value": "7", "direction": "UP", "status": "ORANGE"},
-                    {"value": "10", "direction": "UP", "status": "RED"},
+                    {"value": "10", "direction": "DOWN", "status": "GREEN"},
+                    {"value": "10", "direction": "UP", "status": "YELLOW"},
+                    {"value": "15", "direction": "UP", "status": "ORANGE"},
+                    {"value": "20", "direction": "UP", "status": "RED"},
                     {"value": "50", "direction": "UP", "status": "PURPLE"}
                 ]
-            }
+            },
+          {
+            "name": "ShopServiceAVG",
+            "producerName": "ShopService",
+            "statName": "placeOrder",
+            "valueName": "avg",
+            "intervalName": "1m",
+            "@guards": [
+              {"value": "3.0", "direction": "DOWN", "status": "GREEN"},
+              {"value": "3.0", "direction": "UP", "status": "YELLOW"},
+              {"value": "7.0", "direction": "UP", "status": "ORANGE"},
+              {"value": "10.0", "direction": "UP", "status": "RED"},
+              {"value": "50.0", "direction": "UP", "status": "PURPLE"}
+            ]
+          }
+
+
         ]
     },
 
     "@accumulatorsConfig" : {
-        "accumulationAmount": 500,
+        "accumulationAmount": 10,
         "@accumulators": [
             {
                 "name": "OrdersPerMinute",
@@ -61,7 +77,28 @@
                 "statName": "placeOrder",
                 "valueName": "req",
                 "intervalName": "1m"
-            }
+            },
+          {
+            "name": "OrdersWarning",
+            "producerName": "ThresholdProducer",
+            "statName": "warning",
+            "valueName": "Number",
+            "intervalName": "1m"
+          },
+          {
+            "name": "OrdersInfo",
+            "producerName": "ThresholdProducer",
+            "statName": "info",
+            "valueName": "Number",
+            "intervalName": "1m"
+          },
+          {
+            "name": "OrdersError",
+            "producerName": "ThresholdProducer",
+            "statName": "error",
+            "valueName": "Number",
+            "intervalName": "1m"
+          }
 ]
     },
 
@@ -210,7 +247,8 @@
         "name": "Burger board",
         "@charts": [
           {
-            "accumulators": ["OrdersPerMinute"]
+            "caption": "Orders",
+            "accumulators": ["OrdersPerMinute","OrdersWarning","OrdersInfo", "OrdersError"]
           },
           {
             "caption": "Memory",
