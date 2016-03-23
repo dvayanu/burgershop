@@ -9,7 +9,7 @@
   <url>http://maven.apache.org</url>
 
     <properties>
-        <moskito.version>2.7.1-SNAPSHOT</moskito.version>
+        <moskito.version>2.7.2-SNAPSHOT</moskito.version>
         <aspectj.version>1.7.4</aspectj.version>
     </properties>
 
