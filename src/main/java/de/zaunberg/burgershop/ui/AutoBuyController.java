@@ -31,7 +31,7 @@ public class AutoBuyController {
 	private Random rnd = new Random(System.currentTimeMillis());
 
 
-	@RequestMapping(value = "/auto")
+	@RequestMapping(value = "/auto.html")
 	public String buy() {
 		int numberOfBuys = rnd.nextInt(10);
 		for (int i=0;i <numberOfBuys;i++) {

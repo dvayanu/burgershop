@@ -69,7 +69,7 @@
     },
 
     "@accumulatorsConfig" : {
-        "accumulationAmount": 10,
+        "accumulationAmount": 200,
         "@accumulators": [
             {
                 "name": "OrdersPerMinute",

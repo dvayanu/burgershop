@@ -5,75 +5,84 @@
 
     "@applications": [
         {
-            "name": "Burgershop",
-            "@components": [
-                {
-                    "name": "Hamburg",
-                    "category": "shop",
-                    "connectorType": "HTTP",
-                    "location": "zb1.test.anotheria.net/burgershop"
-                },
-                {
-                	"name": "Berlin",
-                	"category": "shop",
-                	"connectorType": "HTTP",
-                	"location": "zb2.test.anotheria.net/burgershop"
-                },
-                {
-                	"name": "Munich",
-                	"category": "shop",
-                	"connectorType": "HTTP",
-                	"location": "zb3.test.anotheria.net/burgershop"
-                }
+        "name": "Burgershop",
+        "@components": [
+            {
+                "name": "hamburg",
+                "category": "shop",
+                "connectorType": "HTTP",
+                "location": "burgershop-hamburg.demo.moskito.org/burgershop/"
+            },
+            {
+                "name": "munich",
+                "category": "shop",
+                "connectorType": "HTTP",
+                "location": "burgershop-munich.demo.moskito.org/burgershop/"
+            }
             ],
-        "@charts": [
-             {
-                 "name": "Sessions",
-                 "limit": 200,
-                 "@lines": [
-                     {
-                         "component": "Hamburg",
-                         "accumulator": "SessionCount Cur Absolute",
-                         "caption": "Hamburg"
-                     },
-                     {
-                         "component": "Berlin",
-                         "accumulator": "SessionCount Cur Absolute",
-                         "caption": "Berlin"
-                     },
-                     {
-                         "component": "Munich",
-                         "accumulator": "SessionCount Cur Absolute",
-                         "caption": "Munich"
-                     }
-                 ]
-             },
-             {
-                 "name": "Orders",
-                 "limit": 200,
-                 "@lines": [
-                     {
-                         "component": "Hamburg",
-                         "accumulator": "OrdersPerMinute",
-                         "caption": "Hamburg"
-                     },
-                     {
-                         "component": "Berlin",
-                         "accumulator": "OrdersPerMinute",
-                         "caption": "Berlin"
-                     },
-                     {
-                         "component": "Munich",
-                         "accumulator": "OrdersPerMinute",
-                         "caption": "Munich"
-                     }
-                 ]
-             }
+            "@charts": [
 
-			]
-			}],
-		
-	        
+			{
+    			"name": "Orders",
+    			"limit": 100,
+    			"@lines": [
+        		{
+            		"component": "hamburg",
+            		"accumulator": "OrdersPerMinute"
+        		},
+        		{
+            		"component": "munich",
+            		"accumulator": "OrdersPerMinute"
+        		}
+    		]
+				},
+                {
+                    "name": "Sessions",
+                    "limit": 100,
+                    "@lines": [
+                        {
+                            "component": "hamburg",
+                            "accumulator": "SessionCount Cur Absolute"
+                        },
+                        {
+                            "component": "munich",
+                            "accumulator": "SessionCount Cur Absolute"
+                        }
+                    ]
+                },
+				
+                {
+                    "name": "CPU",
+                    "limit": 100,
+                    "@lines": [
+                        {
+                            "component": "hamburg",
+                            "accumulator": "CPU Time 1m"
+                        },
+                        {
+                            "component": "munich",
+                            "accumulator": "CPU Time 1m"
+                        }
+                    ]
+                },
+                {
+                    "name": "URL AVG",
+                    "limit": 100,
+                    "@lines": [
+                        {
+                            "component": "hamburg",
+                            "accumulator": "URL AVG 1m"
+                        },
+                        {
+                            "component": "munich",
+                            "accumulator": "URL AVG 1m"
+                        }
+                    ]
+                }
+
+            ]
+        }
+	],
 
 
     "@connectors": [
